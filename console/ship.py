@@ -1,47 +1,36 @@
-# encoding:utf-8
+# -*- coding: utf-8 -*-
+
 import pygame
 
 class Ship:
-    '''管理飞船的类'''
-
-    def __init__(self, ai_game):
-        '''初始化飞船并设置其初始位置'''
-        self.screen = ai_game.screen
-        self.settings = ai_game.settings
-        self.screen_rect = ai_game.screen.get_rect()
-
-        # 加载飞船图像并获取其外界矩形
-        self.image = pygame.image.load('../images/ship_two.bmp')
+    def __init__(self, screen):
+        """初始化飞船并设置其初始位置"""
+        self.screen = screen
+        # 加载飞船图像并获取外接矩形
+        self.image = pygame.image.load('.\images\ship.bmp')
         self.rect = self.image.get_rect()
+        self.screen_rect = screen.get_rect()
+        # 将每艘新飞船放在屏幕底部中央
+        self.rect.centerx = self.screen_rect.centerx
+        self.rect.bottom = self.screen_rect.bottom
 
-        # 对于每艘新飞船，都将其放在屏幕底部的中央
-        self.rect.midbottom = self.screen_rect.midbottom
-
-        # 在飞船的属性x中存储小数值
-        self.x = float(self.rect.x)
+        # 在飞船的属性center中存储小数值
+        self.center = float(self.rect.centerx)
 
         # 移动标志
         self.moving_right = False
         self.moving_left = False
 
-        # 飞船设置
-        self.ship_speed = 1.5   # 1.5是像素
-
-
-
     def update(self):
-        '''根据移动标志调整飞船的位置'''
-        # 更新飞船而不是rect对象的x值
+        """根据移动标志调整飞船的位置"""
+        # 更新飞船的center值，而不是rect
         if self.moving_right and self.rect.right < self.screen_rect.right:
-            self.rect.x += self.settings.ship_speed
+            self.center += self.ai_settings.ship_speed_factor
         if self.moving_left and self.rect.left > 0:
-            self.rect.x -= self.settings.ship_speed
+            self.center -= self.ai_settings.ship_speed_factor
+        # 根据self.center更新rect对象
+        self.rect.centerx = self.center
 
-        # 根据self.x更新rect对象
-        self.rect.x = self.x
-
-
-
-    def blitme(self):
-        '''在指定位置绘制飞船'''
+    def blime(self):
+        """指定位置绘制飞船"""
         self.screen.blit(self.image, self.rect)
