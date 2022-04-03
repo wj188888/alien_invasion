@@ -13,6 +13,7 @@ class Setting:
         self.ship_speed_factor = 1.5
 
         # 子弹设置
+        self.bullets_allowed = 5
         self.bullet_speed_factor = 1
         self.bullet_width = 3
         self.bullet_height = 15
